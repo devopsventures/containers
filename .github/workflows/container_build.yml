@@ -1,0 +1,81 @@
+name: Container Build
+
+on:
+  workflow_dispatch:
+    container_type:
+      type: choice
+      option:
+        - development-containers
+        - base-containers
+      default: development-containers
+
+    container:
+      type: string
+      default: javascript/nodejs-22
+
+
+jobs:
+  build:
+    name: Build container
+
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Initialize
+        id: init
+        uses: actions/github-script@v7
+        env:
+          container_type: ${{ inputs.container_type }}
+          container_name: ${{ inputs.container }}
+        run:
+        with:
+          script: |
+            // Create a timestamp for versioning the container builds
+            const now = new Date();
+            const timestampParts = [
+              `${now.toLocaleString('default', {year: 'numeric'})}`,
+              `${now.toLocaleString('default', {month: '2-digit'})}`,
+              `${now.toLocaleString('default', {day: '2-digit'})}`,
+              // `${now.toLocaleString('default', {hour: '2-digit'})}`,
+              // `${now.toLocaleString('default', {minute: '2-digit'})}`,
+              // `${now.toLocaleString('default', {second: '2-digit'})}`,
+            ];
+
+            const version = timestampParts.join('-');
+            core.info(`version: ${version}`);
+
+            const containerFullName = `${ context.repo.owner }/${ context.repo.repo }/${process.env.container_type}/${process.env.container_name}`;
+
+            const registry = 'ghcr.io';
+            core.setOutput('registry', registry);
+            core.setOutput('container_full_name', containerFullName);
+            core.setOutput('container_version', version);
+
+            core.setOutput('container_registry_tag', `${registry}/${container_full_name}@${version}`);
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ steps.init.outputs.registry }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup NodeJS
+        uses: actions/setup-nodejs@v4
+        with:
+          node-version: 22
+
+      - name: Install devcontainer CLI
+        run: |
+          npm ci
+
+      - name: Build container
+        run: |
+          ./node_modules/.bin/devcontainer build \
+            --push false \
+            --image-name ${{ steps.init.outputs.container_registry_tag }} \
+            --workspace-folder ${{ inputs.container_name }}
+        working-directory: ${{ inputs.container_type }}

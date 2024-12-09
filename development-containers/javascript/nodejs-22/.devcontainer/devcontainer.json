@@ -1,0 +1,38 @@
+{
+  "name": "JavaScript NodeJS development container - base",
+
+  "build": {
+    "dockerfile": "../../Dockerfile",
+    "args": { 
+      "NODE_VERSION": "22"
+    }
+  },
+  
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": false,
+      "configureZshAsDefaultShell": false,
+      "installOhMyZsh": false,
+      "installOhMyZshConfig": false,
+      "upgradePackages": true,
+      "username": "automatic",
+      "userUid": "automatic",
+      "userGid": "automatic",
+      "nonFreePackages": false
+    },
+    
+    "ghcr.io/devcontainers/features/github-cli": {
+      "version": "latest",
+      "installDirectlyFromGitHubRelease": true
+    },
+
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
+      "version": "latest",
+      "moby": true,
+      "mobyBuildxVersion": "latest",
+      "dockerDashComposeVersion": "v2",
+      "installDockerBuildx": false,
+      "installDockerComposeSwitch": true
+    }
+  }
+}

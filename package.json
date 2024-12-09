@@ -1,0 +1,13 @@
+{
+  "name": "development-containers",
+  "version": "1.0.0",
+  "description": "Develpment containers for various purposes",
+  "scripts": {
+    "build:base-containers": "devcontainer build --workspace-folder base-containers/ubuntu",
+    "build:development-containers": "devcontainer build --workspace-folder development-containers/javascript/nodejs-22",
+    "build": "npm run build:base-containers && npm run build-development-containers"
+  },
+  "devDependencies": {
+    "@devcontainers/cli": "^0.72.0"
+  }
+}
