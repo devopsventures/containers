@@ -16,6 +16,11 @@ on:
         type: string
         default: javascript/nodejs-22
 
+      publish:
+        description: Flag to publish container build result
+        type: boolean
+        default: false
+
 
 jobs:
   build:
@@ -77,7 +82,7 @@ jobs:
       - name: Build container
         run: |
           ${{ github.workspace }}/node_modules/.bin/devcontainer build \
-            --push false \
+            --push ${{ inputs.publish }} \
             --image-name ${{ steps.init.outputs.container_registry_tag }} \
             --workspace-folder ${{ inputs.container }}
         working-directory: ${{ inputs.container_type }}
