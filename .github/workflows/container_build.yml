@@ -76,7 +76,7 @@ jobs:
 
       - name: Build container
         run: |
-          ./node_modules/.bin/devcontainer build \
+          ${{ github.workspace }}/node_modules/.bin/devcontainer build \
             --push false \
             --image-name ${{ steps.init.outputs.container_registry_tag }} \
             --workspace-folder ${{ inputs.container_name }}
