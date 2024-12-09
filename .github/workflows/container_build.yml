@@ -4,13 +4,15 @@ on:
   workflow_dispatch:
     inputs:
       container_type:
+        description: Type of container to build
         type: choice
-        option:
+        options:
           - development-containers
           - base-containers
         default: development-containers
 
       container:
+        description: Name of the container
         type: string
         default: javascript/nodejs-22
 
