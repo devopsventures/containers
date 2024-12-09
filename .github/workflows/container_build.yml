@@ -33,7 +33,6 @@ jobs:
         env:
           container_type: ${{ inputs.container_type }}
           container_name: ${{ inputs.container }}
-        run:
         with:
           script: |
             // Create a timestamp for versioning the container builds
