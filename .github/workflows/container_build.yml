@@ -2,16 +2,17 @@ name: Container Build
 
 on:
   workflow_dispatch:
-    container_type:
-      type: choice
-      option:
-        - development-containers
-        - base-containers
-      default: development-containers
+    inputs:
+      container_type:
+        type: choice
+        option:
+          - development-containers
+          - base-containers
+        default: development-containers
 
-    container:
-      type: string
-      default: javascript/nodejs-22
+      container:
+        type: string
+        default: javascript/nodejs-22
 
 
 jobs:
