@@ -51,7 +51,7 @@ jobs:
               // `${now.toLocaleString('default', {second: '2-digit'})}`,
             ];
 
-            const version = timestampParts.join('-');
+            const version = timestampParts.join('');
             core.info(`version: ${version}`);
 
             const containerFullName = `${ context.repo.owner }/${ context.repo.repo }/${process.env.container_type}/${process.env.container_name}`;
