@@ -79,5 +79,5 @@ jobs:
           ${{ github.workspace }}/node_modules/.bin/devcontainer build \
             --push false \
             --image-name ${{ steps.init.outputs.container_registry_tag }} \
-            --workspace-folder ${{ inputs.container_name }}
+            --workspace-folder ${{ inputs.container }}
         working-directory: ${{ inputs.container_type }}
